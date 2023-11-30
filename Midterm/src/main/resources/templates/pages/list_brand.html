@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html layout:decorate="~{layout}"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<head>
+  <title>Home</title>
+</head>
+<body>
+<section layout:fragment="content">
+  <div class="row">
+    <div class="col-lg-12 grid-margin stretch-card">
+      <div class="card">
+        <div class="card-body">
+          <h4 class="card-title">Brand</h4>
+          <a href="/admin/brand/new_brand" class="btn btn-primary mb-3">Create New Brand</a>
+          <div class="table-responsive">
+            <table class="table table-striped">
+              <thead>
+              <tr>
+                <th>
+                  Brand ID
+                </th>
+                <th>
+                  Name
+                </th>
+                <th>
+                  Actions
+                </th>
+              </tr>
+              </thead>
+              <tbody>
+              <tr th:each="brand : ${allBrands}">
+                <td th:text="${brand.id}">Brand ID</td>
+                <td th:text="${brand.name}">Name</td>
+                <td>
+                  <a th:href="@{'/admin/brand/edit/' + ${brand.id}}">Edit</a>
+                  &nbsp;&nbsp;&nbsp;
+                  <a th:href="@{'/admin/brand/delete/' + ${brand.id}}">Delete</a>
+                </td>
+              </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+</body>
+</html>

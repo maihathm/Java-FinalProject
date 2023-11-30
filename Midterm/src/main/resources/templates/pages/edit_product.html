@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html layout:decorate="~{layout}"
+	  xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<head>
+	<title>Home</title>
+</head>
+<body>
+<section layout:fragment="content">
+	<div class="col-md-12 grid-margin stretch-card">
+		<div class="card">
+			<div class="card-body">
+				<h4 class="card-title">Edit Product</h4>
+				<p class="card-description">Edit product details</p>
+				<form action="/admin/product/save" th:object="${product}" method="post" class="forms-sample">
+					<div class="form-group">
+						<label for="exampleInputImageUrl">Image URL</label>
+						<input type="text" class="form-control" id="exampleInputImageUrl" placeholder="Image URL" th:field="*{image}">
+					</div>
+					<div class="form-group"  th:if="${not #strings.isEmpty(product.id)}">
+						<label for="exampleInputProductId">Product ID</label>
+						<input type="text" class="form-control" id="exampleInputProductId" placeholder="Product ID" th:field="*{id}" readonly="readonly">
+					</div>
+					<div class="form-group">
+						<label for="exampleInputName1">Product Name</label>
+						<input type="text" class="form-control" id="exampleInputName1" placeholder="Product Name" th:field="*{name}">
+					</div>
+					<div class="form-group">
+						<label for="exampleInputColor">Color</label>
+						<input type="text" class="form-control" id="exampleInputColor" placeholder="Color" th:field="*{color}">
+					</div>
+					<div class="form-group">
+						<label for="exampleInputQuantity">Quantity</label>
+						<input type="text" class="form-control" id="exampleInputQuantity" placeholder="Quantity" th:field="*{quantity}">
+					</div>
+					<div class="form-group">
+						<label for="exampleInputHot">Hot Item</label>
+						<select class="form-control" id="exampleInputHot" th:field="*{hot}">
+							<option value="false" th:selected="${product.hot == false}">False</option>
+							<option value="true" th:selected="${product.hot == true}">True</option>
+						</select>
+					</div>
+					<div class="form-group">
+						<label for="exampleInputBrand">Brand</label>
+						<select class="form-control" id="exampleInputBrand" th:field="*{brand.id}">
+							<option th:each="brand : ${ListBrand}" th:value="${brand.id}" th:text="${brand.name}" th:selected="${brand.id == product.brand.id}"></option>
+						</select>
+					</div>
+					<div class="form-group">
+						<label for="exampleInputCategory">Category</label>
+						<select class="form-control" id="exampleInputCategory" th:field="*{category.id}">
+							<option th:each="category : ${ListCategory}" th:value="${category.id}" th:text="${category.name}" th:selected="${category.id == product.category.id}"></option>
+						</select>
+					</div>
+					<div class="form-group">
+						<label for="exampleInputPrice">Price</label>
+						<input type="text" class="form-control" id="exampleInputPrice" placeholder="Price" th:field="*{price}">
+					</div>
+					<button type="submit" class="btn btn-success mr-2">Save</button>
+					<button type="reset" class="btn btn-light"><a href="/admin/product" >Cancel</a></button>
+				</form>
+			</div>
+		</div>
+	</div>
+
+</section>
+</body>
+</html>

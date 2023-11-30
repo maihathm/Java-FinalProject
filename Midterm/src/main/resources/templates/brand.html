@@ -1,0 +1,383 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Home</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Font Awesome -->
+    <link
+            href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+            rel="stylesheet"
+    />
+    <!-- Google Fonts -->
+    <link
+            href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap"
+            rel="stylesheet"
+    />
+    <!-- MDB -->
+    <link
+            href="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/6.4.1/mdb.min.css"
+            rel="stylesheet"
+    />
+</head>
+<body>
+<!--Main Navigation-->
+    <header>
+        <!-- Jumbotron -->
+        <div class="p-3 text-center bg-white border-bottom">
+            <div class="container">
+                <div class="row gy-3">
+                    <!-- Left elements -->
+                    <div class="col-lg-2 col-sm-4 col-4">
+                        <a href="/" class="float-start">
+                            Truc's Shop
+                        </a>
+                        <br></br>
+                        <a href="/admin/list" class="float-start">
+                            Admin Product
+                        </a>
+                    </div>
+                    <!-- Left elements -->
+
+                    <!-- Center elements -->
+                    <div class="order-lg-last col-lg-5 col-sm-8 col-8">
+                        <div class="d-flex float-end">
+                            <a th:if="${user != null}" href="/logout" class="me-1 border rounded py-1 px-3 nav-link d-flex align-items-center"> <i class="fas fa-user-alt m-1 me-md-2"></i><p class="d-none d-md-block mb-0">Sign out</p> </a>
+                            <a th:unless="${user != null}" th:href="'/oauth2/authorization/facebook'" class="me-1 border rounded py-1 px-3 nav-link d-flex align-items-center"> <i class="fas fa-user-alt m-1 me-md-2"></i><p class="d-none d-md-block mb-0">Sign in</p> </a>
+                            <a href="/cart" class="border rounded py-1 px-3 nav-link d-flex align-items-center position-relative">
+                                <i class="fas fa-shopping-cart m-1 me-md-2"></i>
+                                <p class="d-none d-md-block mb-0">My cart</p>
+                                <span th:if="${cartItems != null}" th:text="${#lists.size(cartItems)}" class="position-absolute top-0 start-100 translate-middle badge rounded-pill badge-danger"></span>
+                                <span th:unless="${cartItems != null}" th:text="0" class="position-absolute top-0 start-100 translate-middle badge rounded-pill badge-danger"></span>
+                            </a>
+                        </div>
+                    </div>
+                    <!-- Center elements -->
+
+                    <!-- Right elements -->
+
+                    <div class="col-lg-5 col-md-12 col-12">
+                        <form action="/search" method="get">
+                            <div class="input-group float-center">
+                                <div class="form-outline">
+                                    <input type="search" name="name" id="form1" class="form-control" />
+                                    <label class="form-label" for="form1">Search</label>
+                                </div>
+                                <button type="submit" class="btn btn-primary shadow-0">
+                                    <i class="fas fa-search"></i>
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+
+                    <!-- Right elements -->
+                </div>
+            </div>
+        </div>
+        <!-- Jumbotron -->
+
+        <!-- Navbar -->
+        <nav class="navbar navbar-expand-lg navbar-light bg-white">
+            <!-- Container wrapper -->
+            <div class="container justify-content-center justify-content-md-between">
+                <!-- Toggle button -->
+                <button
+                        class="navbar-toggler border py-2 text-dark"
+                        type="button"
+                        data-mdb-toggle="collapse"
+                        data-mdb-target="#navbarLeftAlignExample"
+                        aria-controls="navbarLeftAlignExample"
+                        aria-expanded="false"
+                        aria-label="Toggle navigation"
+                >
+                    <i class="fas fa-bars"></i>
+                </button>
+
+                <!-- Collapsible wrapper -->
+                <div class="collapse navbar-collapse" id="navbarLeftAlignExample">
+                    <!-- Left links -->
+                    <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" href="/">Home</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" aria-current="page" href="/shop">Shop</a>
+                        </li>
+                        <!-- Navbar dropdown -->
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle text-dark" href="#" id="navbarDropdownBrand" role="button" data-mdb-toggle="dropdown" aria-expanded="false">
+                                Brand
+                            </a>
+                            <ul class="dropdown-menu" aria-labelledby="navbarDropdownBrand">
+                                <li th:each="brand: ${allBrands}">
+                                    <!--/*@thymesVar id="brand" type="com.example.midterm.model.Brand"*/-->
+                                    <a class="dropdown-item" th:href="'/brand?id=' + ${brand.id}" href="" th:text="${brand.name}"></a>
+                                </li>
+                            </ul>
+                        </li>
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle text-dark" href="#" id="navbarDropdownCategory" role="button" data-mdb-toggle="dropdown" aria-expanded="false">
+                                Category
+                            </a>
+                            <ul class="dropdown-menu" aria-labelledby="navbarDropdownCategory">
+                                <li th:each="category: ${allCategories}">
+                                    <!--/*@thymesVar id="category" type="com.example.midterm.model.Category"*/-->
+                                    <a class="dropdown-item" th:href="'/category?id=' + ${category.id}" href="" th:text="${category.name}"></a>
+                                </li>
+                            </ul>
+                        </li>
+                    </ul>
+                    <!-- Left links -->
+                </div>
+            </div>
+            <!-- Container wrapper -->
+        </nav>
+        <!-- Navbar -->
+    </header>
+    <!-- Products -->
+    <section th:if="${brand != null}">
+        <div class="container my-5">
+
+            <header class="mb-4">
+                <!--/*@thymesVar id="brand" type="com.example.midterm.model.Brand"*/-->
+                <h3 th:text="${brand.name}"></h3>
+            </header>
+
+            <div class="row">
+                <!--/*@thymesVar id="brand" type="com.example.midterm.model.Brand"*/-->
+                <div class="col-lg-3 col-md-6 col-sm-6 d-flex" th:each="product : ${brand.products}">
+                    <!--/*@thymesVar id="product" type="com.example.midterm.model.Product"*/-->
+                    <div class="card w-100 my-2 shadow-2-strong">
+                        <img th:src="${product.image}" src="" class="card-img-top" style="aspect-ratio: 1 / 1" />
+                        <div class="card-body d-flex flex-column">
+                            <h5 class="card-title" th:text="${product.name}"></h5>
+                            <p class="card-text" th:text="'₫' + ${#numbers.formatInteger(product.price, 3, 'POINT')}"></p>
+                            <p class="card-text" th:text="${'Stock: ' + product.quantity}"></p>
+                            <form th:action="@{/cart}" method="post">
+                                <input type="number" name="productId" th:value="${product.id}" class="d-none">
+                                <div class="card-footer d-flex align-items-end pt-3 px-0 pb-0 mt-auto">
+                                    <button type="submit" class="btn btn-primary shadow-0 me-1">
+                                        Add to cart
+                                    </button>
+                                    <input name="quantity" type="number" min="1" value="1" class="w-25" th:max="${product.quantity}">
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section th:if="${brand == null}">
+        <div class="container my-5" th:each="brand : ${allBrands}">
+            <!--/*@thymesVar id="brand" type="com.example.midterm.model.Brand"*/-->
+            <header class="mb-4">
+                <h3 th:text="${brand.name}"></h3>
+            </header>
+
+            <div class="row">
+                <div class="col-lg-3 col-md-6 col-sm-6 d-flex" th:each="product : ${brand.products}">
+                    <!--/*@thymesVar id="product" type="com.example.midterm.model.Product"*/-->
+                    <div class="card w-100 my-2 shadow-2-strong">
+                        <img th:src="${product.image}" src="" class="card-img-top" style="aspect-ratio: 1 / 1" />
+                        <div class="card-body d-flex flex-column">
+                            <h5 class="card-title" th:text="${product.name}"></h5>
+                            <p class="card-text" th:text="'₫' + ${#numbers.formatInteger(product.price, 3, 'POINT')}"></p>
+                            <div class="card-footer d-flex align-items-end pt-3 px-0 pb-0 mt-auto">
+                                <a href="#" th:id="'product-' + ${product.id}" class="btn btn-primary shadow-0 me-1 addToCartButton">Add to cart</a>
+                                <a th:href="'/product?id=' + ${product.id}" href="/product?id=" class="btn btn-light border px-2 pt-2">Detail</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- Products -->
+
+    <!-- Feature -->
+    <section class="mt-5" style="background-color: #f5f5f5;">
+        <div class="container text-dark pt-3">
+            <header class="pt-4 pb-3">
+                <h3>Why choose us</h3>
+            </header>
+
+            <div class="row mb-4">
+                <div class="col-lg-4 col-md-6">
+                    <figure class="d-flex align-items-center mb-4">
+              <span class="rounded-circle bg-white p-3 d-flex me-2 mb-2">
+                <i class="fas fa-camera-retro fa-2x fa-fw text-primary floating"></i>
+              </span>
+                        <figcaption class="info">
+                            <h6 class="title">Reasonable prices</h6>
+                            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit sed do eiusmor</p>
+                        </figcaption>
+                    </figure>
+                    <!-- itemside // -->
+                </div>
+                <!-- col // -->
+                <div class="col-lg-4 col-md-6">
+                    <figure class="d-flex align-items-center mb-4">
+              <span class="rounded-circle bg-white p-3 d-flex me-2 mb-2">
+                <i class="fas fa-star fa-2x fa-fw text-primary floating"></i>
+              </span>
+                        <figcaption class="info">
+                            <h6 class="title">Best quality</h6>
+                            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit sed do eiusmor</p>
+                        </figcaption>
+                    </figure>
+                    <!-- itemside // -->
+                </div>
+                <!-- col // -->
+                <div class="col-lg-4 col-md-6">
+                    <figure class="d-flex align-items-center mb-4">
+              <span class="rounded-circle bg-white p-3 d-flex me-2 mb-2">
+                <i class="fas fa-plane fa-2x fa-fw text-primary floating"></i>
+              </span>
+                        <figcaption class="info">
+                            <h6 class="title">Worldwide shipping</h6>
+                            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit sed do eiusmor</p>
+                        </figcaption>
+                    </figure>
+                    <!-- itemside // -->
+                </div>
+                <!-- col // -->
+                <div class="col-lg-4 col-md-6">
+                    <figure class="d-flex align-items-center mb-4">
+              <span class="rounded-circle bg-white p-3 d-flex me-2 mb-2">
+                <i class="fas fa-users fa-2x fa-fw text-primary floating"></i>
+              </span>
+                        <figcaption class="info">
+                            <h6 class="title">Customer satisfaction</h6>
+                            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit sed do eiusmor</p>
+                        </figcaption>
+                    </figure>
+                    <!-- itemside // -->
+                </div>
+                <!-- col // -->
+                <div class="col-lg-4 col-md-6">
+                    <figure class="d-flex align-items-center mb-4">
+              <span class="rounded-circle bg-white p-3 d-flex me-2 mb-2">
+                <i class="fas fa-thumbs-up fa-2x fa-fw text-primary floating"></i>
+              </span>
+                        <figcaption class="info">
+                            <h6 class="title">Happy customers</h6>
+                            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit sed do eiusmor</p>
+                        </figcaption>
+                    </figure>
+                    <!-- itemside // -->
+                </div>
+                <!-- col // -->
+                <div class="col-lg-4 col-md-6">
+                    <figure class="d-flex align-items-center mb-4">
+              <span class="rounded-circle bg-white p-3 d-flex me-2 mb-2">
+                <i class="fas fa-box fa-2x fa-fw text-primary floating"></i>
+              </span>
+                        <figcaption class="info">
+                            <h6 class="title">Thousand items</h6>
+                            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit sed do eiusmor</p>
+                        </figcaption>
+                    </figure>
+                    <!-- itemside // -->
+                </div>
+                <!-- col // -->
+            </div>
+        </div>
+        <!-- container end.// -->
+    </section>
+    <!-- Feature -->
+
+    <!-- Footer -->
+    <footer class="text-center text-lg-start text-muted mt-3" style="background-color: #f5f5f5;">
+        <!-- Section: Links  -->
+        <section class="">
+            <div class="container text-center text-md-start pt-4 pb-4">
+                <!-- Grid row -->
+                <div class="row mt-3">
+                    <!-- Grid column -->
+                    <div class="col-12 col-lg-3 col-sm-12 mb-2">
+                        <!-- Content -->
+                        <a href="/" class="">
+                            Truc's Shop
+                        </a>
+                        <p class="mt-2 text-dark">
+                            © 2023 Copyright: Truc
+                        </p>
+                    </div>
+                    <!-- Grid column -->
+
+                    <!-- Grid column -->
+                    <div class="col-6 col-sm-4 col-lg-2">
+                        <!-- Links -->
+                        <h6 class="text-uppercase text-dark fw-bold mb-2">
+                            Store
+                        </h6>
+                        <ul class="list-unstyled mb-4">
+                            <li><a class="text-muted" href="#">About us</a></li>
+                            <li><a class="text-muted" href="#">Find store</a></li>
+                            <li><a class="text-muted" href="#">Categories</a></li>
+                            <li><a class="text-muted" href="#">Blogs</a></li>
+                        </ul>
+                    </div>
+                    <!-- Grid column -->
+
+                    <!-- Grid column -->
+                    <div class="col-6 col-sm-4 col-lg-2">
+                        <!-- Links -->
+                        <h6 class="text-uppercase text-dark fw-bold mb-2">
+                            Information
+                        </h6>
+                        <ul class="list-unstyled mb-4">
+                            <li><a class="text-muted" href="#">Help center</a></li>
+                            <li><a class="text-muted" href="#">Money refund</a></li>
+                            <li><a class="text-muted" href="#">Shipping info</a></li>
+                            <li><a class="text-muted" href="#">Refunds</a></li>
+                        </ul>
+                    </div>
+                    <!-- Grid column -->
+
+                    <!-- Grid column -->
+                    <div class="col-6 col-sm-4 col-lg-2">
+                        <!-- Links -->
+                        <h6 class="text-uppercase text-dark fw-bold mb-2">
+                            Support
+                        </h6>
+                        <ul class="list-unstyled mb-4">
+                            <li><a class="text-muted" href="#">Help center</a></li>
+                            <li><a class="text-muted" href="#">Documents</a></li>
+                            <li><a class="text-muted" href="#">Account restore</a></li>
+                            <li><a class="text-muted" href="#">My orders</a></li>
+                        </ul>
+                    </div>
+                    <!-- Grid column -->
+
+                    <!-- Grid column -->
+                    <div class="col-12 col-sm-12 col-lg-3">
+                        <!-- Links -->
+                        <h6 class="text-uppercase text-dark fw-bold mb-2">Newsletter</h6>
+                        <p class="text-muted">Stay in touch with latest updates about our products and offers</p>
+                        <div class="input-group mb-3">
+                            <input type="email" class="form-control border" placeholder="Email" aria-label="Email" aria-describedby="button-addon2" />
+                            <button class="btn btn-light border shadow-0" type="button" id="button-addon2" data-mdb-ripple-color="dark">
+                                Join
+                            </button>
+                        </div>
+                    </div>
+                    <!-- Grid column -->
+                </div>
+                <!-- Grid row -->
+            </div>
+        </section>
+        <!-- Section: Links  -->
+
+    </footer>
+    <!-- Footer -->
+    <!-- MDB -->
+    <script
+            type="text/javascript"
+            src="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/6.4.1/mdb.min.js"
+    ></script>
+</body>
+</html>

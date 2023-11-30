@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Home</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Font Awesome -->
+    <link
+            href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+            rel="stylesheet"
+    />
+    <!-- Google Fonts -->
+    <link
+            href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap"
+            rel="stylesheet"
+    />
+    <!-- MDB -->
+    <link
+            href="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/6.4.1/mdb.min.css"
+            rel="stylesheet"
+    />
+</head>
+<body>
+    <!--/*@thymesVar id="user" type="com.example.midterm.model.User"*/-->
+    <header>
+        <!-- Jumbotron -->
+        <div class="p-3 text-center bg-white border-bottom">
+            <div class="container">
+                <div class="row gy-3">
+                    <!-- Left elements -->
+                    <div class="col-lg-2 col-sm-4 col-4">
+                        <a href="/" class="float-start">
+                            Truc's Shop
+                        </a>
+                    </div>
+                    <!-- Left elements -->
+
+                    <!-- Center elements -->
+                    <div class="order-lg-last col-lg-5 col-sm-8 col-8">
+                        <div class="d-flex float-end">
+                            <a href="/cart" class="border rounded py-1 px-3 nav-link d-flex align-items-center position-relative">
+                                <i class="fas fa-shopping-cart m-1 me-md-2"></i>
+                                <p class="d-none d-md-block mb-0">My cart</p>
+                                <span th:if="${cartItems != null}" th:text="${#lists.size(cartItems)}" class="position-absolute top-0 start-100 translate-middle badge rounded-pill badge-danger"></span>
+                                <span th:unless="${cartItems != null}" th:text="0" class="position-absolute top-0 start-100 translate-middle badge rounded-pill badge-danger"></span>
+                            </a>
+                        </div>
+                    </div>
+                    <!-- Center elements -->
+
+                    <!-- Right elements -->
+
+                    <div class="col-lg-5 col-md-12 col-12">
+                        <form action="/search" method="get">
+                            <div class="input-group float-center">
+                                <div class="form-outline">
+                                    <input type="search" name="name" id="form1" class="form-control" />
+                                    <label class="form-label" for="form1">Search</label>
+                                </div>
+                                <button type="submit" class="btn btn-primary shadow-0">
+                                    <i class="fas fa-search"></i>
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+
+                    <!-- Right elements -->
+                </div>
+            </div>
+        </div>
+        <!-- Jumbotron -->
+
+        <!-- Heading -->
+        <div class="bg-primary">
+            <div class="container py-4">
+                <!-- Breadcrumb -->
+                <nav class="d-flex">
+                    <h6 class="mb-0">
+                        <a href="/" class="text-white-50">Home</a>
+                        <span class="text-white-50 mx-2"> > </span>
+                        <a href="#" class="text-white-50">Shopping cart</a>
+                        <span class="text-white-50 mx-2"> > </span>
+                        <a href="#" class="text-white"><u>Order Info</u></a>
+                    </h6>
+                </nav>
+                <!-- Breadcrumb -->
+            </div>
+        </div>
+        <!-- Heading -->
+    </header>
+
+    <section class="bg-light py-5">
+        <div class="container">
+            <div class="row">
+                <div class="col-xl-8 col-lg-8 mb-4">
+                    <form th:action="@{/checkout}" method="post">
+                        <!-- Checkout -->
+                        <div class="card shadow-0 border">
+                            <div class="p-4">
+                                <h5 class="card-title mb-3">Checkout</h5>
+                                <div class="row">
+                                    <div class="col-6 mb-3">
+                                        <div class="form-outline">
+                                            <input type="text" id="order-name" name="name" class="form-control" />
+                                            <label class="form-label" for="order-name">Name</label>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-6 mb-3">
+                                        <div class="form-outline">
+                                            <input type="text" id="order-email" name="email" class="form-control" />
+                                            <label class="form-label" for="order-email">Email</label>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <hr class="my-4" />
+
+                                <h5 class="card-title mb-3">Shipping info</h5>
+
+                                <div class="row mb-3">
+                                    <div class="col-lg-12 mb-3">
+                                        <!-- Default checked radio -->
+                                        <div class="form-check h-100 border rounded-3">
+                                            <div class="p-3">
+                                                <input class="form-check-input" type="radio" checked />
+                                                <label class="form-check-label">
+                                                    Ship Cod <br />
+                                                    <small class="text-muted">3-4 days via Fedex </small>
+                                                </label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-sm-8 mb-3">
+                                        <p class="mb-0">Address</p>
+                                        <div class="form-outline">
+                                            <input type="text" required name="address" placeholder="Type here" class="form-control" />
+                                        </div>
+                                    </div>
+
+                                    <div class="col-sm-4 mb-3">
+                                        <p class="mb-0">City</p>
+                                        <select class="form-select" name="city">
+                                            <option value="HCM">HCM</option>
+                                            <option value="Ha Noi">Ha Noi</option>
+                                            <option value="Da Nang">Da Nang</option>
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <div class="mb-3">
+                                    <p class="mb-0">Message to seller</p>
+                                    <div class="form-outline">
+                                        <textarea class="form-control" name="message" id="textAreaExample1" rows="2"></textarea>
+                                    </div>
+                                </div>
+
+                                <div class="float-end">
+                                    <button type="submit" class="btn btn-success shadow-0 border">Confirm</button>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Checkout -->
+                    </form>
+                </div>
+                <div class="col-xl-4 col-lg-4 d-flex justify-content-center justify-content-lg-end">
+                    <div class="ms-lg-4 mt-4 mt-lg-0" style="max-width: 320px;">
+                        <h6 class="mb-3">Summary</h6>
+                        <hr />
+                        <div class="d-flex justify-content-between">
+                            <p class="mb-2">Total price:</p>
+                            <p class="mb-2 fw-bold" th:text="'₫' + ${#numbers.formatInteger(totalPrice, 3, 'POINT')}">$149.90</p>
+                        </div>
+
+                        <hr />
+                        <h6 class="text-dark my-4">Items in cart</h6>
+
+                        <div th:each="cartItem: ${cartItems}" class="d-flex align-items-center mb-4">
+                            <!--/*@thymesVar id="cartItem" type="com.example.midterm.model.CartItem"*/-->
+                            <div class="me-3 position-relative">
+                                <span th:text="${cartItem.quantity}" class="position-absolute top-0 start-100 translate-middle badge rounded-pill badge-secondary">
+                                    1
+                                </span>
+                                <img th:src="${cartItem.product.image}" style="height: 96px; width: 96px;" class="img-sm rounded border" />
+                            </div>
+                            <div class="">
+                                <a th:text="${cartItem.product.name}" href="#" class="nav-link">
+                                    Gaming Headset with Mic <br />
+                                    Darkblue color
+                                </a>
+                                <div class="price text-muted" th:text="'Total: ₫ ' + ${#numbers.formatInteger(cartItem.product.price * cartItem.quantity, 3, 'POINT')}">$295.99</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="text-center text-lg-start text-muted mt-3" style="background-color: #f5f5f5;">
+        <!-- Section: Links  -->
+        <section class="">
+            <div class="container text-center text-md-start pt-4 pb-4">
+                <!-- Grid row -->
+                <div class="row mt-3">
+                    <!-- Grid column -->
+                    <div class="col-12 col-lg-3 col-sm-12 mb-2">
+                        <!-- Content -->
+                        <a href="/" class="">
+                            Truc's Shop
+                        </a>
+                        <p class="mt-2 text-dark">
+                            © 2023 Copyright: Truc
+                        </p>
+                    </div>
+                    <!-- Grid column -->
+
+                    <!-- Grid column -->
+                    <div class="col-6 col-sm-4 col-lg-2">
+                        <!-- Links -->
+                        <h6 class="text-uppercase text-dark fw-bold mb-2">
+                            Store
+                        </h6>
+                        <ul class="list-unstyled mb-4">
+                            <li><a class="text-muted" href="#">About us</a></li>
+                            <li><a class="text-muted" href="#">Find store</a></li>
+                            <li><a class="text-muted" href="#">Categories</a></li>
+                            <li><a class="text-muted" href="#">Blogs</a></li>
+                        </ul>
+                    </div>
+                    <!-- Grid column -->
+
+                    <!-- Grid column -->
+                    <div class="col-6 col-sm-4 col-lg-2">
+                        <!-- Links -->
+                        <h6 class="text-uppercase text-dark fw-bold mb-2">
+                            Information
+                        </h6>
+                        <ul class="list-unstyled mb-4">
+                            <li><a class="text-muted" href="#">Help center</a></li>
+                            <li><a class="text-muted" href="#">Money refund</a></li>
+                            <li><a class="text-muted" href="#">Shipping info</a></li>
+                            <li><a class="text-muted" href="#">Refunds</a></li>
+                        </ul>
+                    </div>
+                    <!-- Grid column -->
+
+                    <!-- Grid column -->
+                    <div class="col-6 col-sm-4 col-lg-2">
+                        <!-- Links -->
+                        <h6 class="text-uppercase text-dark fw-bold mb-2">
+                            Support
+                        </h6>
+                        <ul class="list-unstyled mb-4">
+                            <li><a class="text-muted" href="#">Help center</a></li>
+                            <li><a class="text-muted" href="#">Documents</a></li>
+                            <li><a class="text-muted" href="#">Account restore</a></li>
+                            <li><a class="text-muted" href="#">My orders</a></li>
+                        </ul>
+                    </div>
+                    <!-- Grid column -->
+
+                    <!-- Grid column -->
+                    <div class="col-12 col-sm-12 col-lg-3">
+                        <!-- Links -->
+                        <h6 class="text-uppercase text-dark fw-bold mb-2">Newsletter</h6>
+                        <p class="text-muted">Stay in touch with latest updates about our products and offers</p>
+                        <div class="input-group mb-3">
+                            <input type="email" class="form-control border" placeholder="Email" aria-label="Email" aria-describedby="button-addon2" />
+                            <button class="btn btn-light border shadow-0" type="button" id="button-addon2" data-mdb-ripple-color="dark">
+                                Join
+                            </button>
+                        </div>
+                    </div>
+                    <!-- Grid column -->
+                </div>
+                <!-- Grid row -->
+            </div>
+        </section>
+        <!-- Section: Links  -->
+
+    </footer>
+    <script
+            type="text/javascript"
+            src="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/6.4.1/mdb.min.js"
+    ></script>
+</body>
+</html>

@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html layout:decorate="~{layout}" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<head>
+    <title>Create New Brand</title>
+</head>
+<body>
+<section layout:fragment="content">
+    <div class="col-md-12 grid-margin stretch-card">
+        <div class="card">
+            <div class="card-body">
+                <h4 class="card-title">Create New Brand</h4>
+                <p class="card-description">Enter brand details</p>
+                <form action="/admin/brand/save" th:object="${brand}" method="post" class="forms-sample">
+                    <div class="form-group">
+                        <label for="exampleInputBrandName">Brand Name</label>
+                        <input type="text" class="form-control" id="exampleInputBrandName" placeholder="Brand Name" th:field="*{name}">
+                    </div>
+                    <button type="submit" class="btn btn-success mr-2">Save</button>
+                    <button type="reset" class="btn btn-light"><a href="/admin/brand">Cancel</a></button>
+                </form>
+            </div>
+        </div>
+    </div>
+</section>
+</body>
+</html>
