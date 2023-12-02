@@ -32,4 +32,5 @@ public class Order {
 
     @OneToMany(mappedBy = "order", fetch = FetchType.EAGER)
     private Set<OrderDetail> orderDetails;
+
 }

@@ -18,8 +18,8 @@ public class CategoryService {
         return categoryRepository.findAll();
     }
 
-    public Optional<Category> getCategoryById(Long id) {
-        return categoryRepository.findById(id);
+    public Category getCategoryById(Long id) throws Exception {
+        return categoryRepository.findById(id).orElseThrow(() -> new Exception("Not found Brand"));
     }
 
     public Category saveCategory(Category category) {

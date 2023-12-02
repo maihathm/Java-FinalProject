@@ -41,7 +41,7 @@ public class CategoryController {
 
     @GetMapping("/edit/{id}")
     public String showEditCategoryPage(@PathVariable(name = "id") Long id, Model model) {
-        Optional<Category> category;
+        Category category;
         try {
             category = categoryService.getCategoryById(id);
         } catch (Exception e) {

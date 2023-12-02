@@ -1,6 +1,5 @@
 package com.example.midterm.repos;
 
-import com.example.midterm.model.Brand;
 import com.example.midterm.model.Category;
 import org.springframework.data.jpa.repository.JpaRepository;
 
