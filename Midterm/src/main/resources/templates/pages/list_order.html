@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" layout:decorate="~{layout}">
+<head>
+    <meta charset="UTF-8">
+    <title>Order List</title>
+    <!-- Add your CSS styles or link to external stylesheets here -->
+</head>
+<body>
+
+<section layout:fragment="content">
+    <div class="row">
+        <div class="col-lg-12 grid-margin stretch-card">
+            <div class="card">
+                <div class="card-body">
+                    <h4 class="card-title">Order List</h4>
+                    <!-- Add any additional content or filters here if needed -->
+
+                    <div class="table-responsive">
+                        <table class="table table-striped">
+                            <thead>
+                            <tr>
+                                <th>Order ID</th>
+                                <th>Total</th>
+                                <th>Name</th>
+                                <th>Email</th>
+                                <th>Address</th>
+                                <th>Message</th>
+                                <!-- Add more columns based on your Order entity -->
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <!-- Use Thymeleaf iteration to loop through orders -->
+                            <!-- Replace 'allOrders' with the actual attribute name you set in the controller -->
+                            <tr th:each="order : ${allOrders}">
+                                <td th:text="${order.id}">Order ID</td>
+                                <td th:text="${order.total}">Total</td>
+                                <td th:text="${order.name}">Name</td>
+                                <td th:text="${order.email}">Email</td>
+                                <td th:text="${order.address}">Address</td>
+                                <td th:text="${order.message}">Message</td>
+                                <td th:text="${order.order_date}">Order Date</td>
+                                <!-- Add more columns based on your Order entity -->
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+</body>
+</html>

@@ -3,6 +3,7 @@ package com.example.midterm.model;
 import jakarta.persistence.*;
 import lombok.Data;
 
+import java.util.Date;
 import java.util.Set;
 
 @Entity
@@ -33,4 +34,7 @@ public class Order {
     @OneToMany(mappedBy = "order", fetch = FetchType.EAGER)
     private Set<OrderDetail> orderDetails;
 
+    @Column(nullable = false)
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date order_date;
 }
