@@ -25,6 +25,8 @@
                                 <th>Email</th>
                                 <th>Address</th>
                                 <th>Message</th>
+                                <th>Order Date</th>
+                                <th>See order detail</th>
                                 <!-- Add more columns based on your Order entity -->
                             </tr>
                             </thead>
@@ -38,7 +40,10 @@
                                 <td th:text="${order.email}">Email</td>
                                 <td th:text="${order.address}">Address</td>
                                 <td th:text="${order.message}">Message</td>
-                                <td th:text="${order.order_date}">Order Date</td>
+                                <td th:text="${order.orderDate}">Order Date</td>
+                                <td>
+                                    <a th:href="@{'order/detail/' + ${order.id}}" class="btn btn-info btn-sm">See details</a>
+                                </td>
                                 <!-- Add more columns based on your Order entity -->
                             </tr>
                             </tbody>

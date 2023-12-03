@@ -7,6 +7,7 @@ import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -98,6 +99,7 @@ public class ShoppingCartService {
     public void checkout(String name, String email, String address, String message) {
         Set<CartItem> allCartItems = new HashSet<>(getCartItems());
         Long total = getTotalPrice();
+
         System.out.println("-----------------Creating Order-------------");
         Order order = new Order();
         order.setAddress(address);
@@ -106,6 +108,9 @@ public class ShoppingCartService {
         order.setMessage(message);
         order.setTotal(total);
         order.setOrderDetails(new HashSet<>());
+
+        // Set the order date to the current time
+        order.setOrderDate(new Date());
 
         orderRepository.save(order);
 
@@ -120,4 +125,5 @@ public class ShoppingCartService {
             removeProductFromCart(cartItem.getProduct().getId().toString());
         }));
     }
+
 }

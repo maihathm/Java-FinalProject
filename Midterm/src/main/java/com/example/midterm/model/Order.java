@@ -36,5 +36,14 @@ public class Order {
 
     @Column(nullable = false)
     @Temporal(TemporalType.TIMESTAMP)
-    private Date order_date;
+    private Date orderDate;
+    @PrePersist
+    protected void onCreate() {
+        if (orderDate == null) {
+            orderDate = new Date();
+        }
+    }
+    public void setOrderDate(Date orderDate) {
+        this.orderDate = orderDate;
+    }
 }
