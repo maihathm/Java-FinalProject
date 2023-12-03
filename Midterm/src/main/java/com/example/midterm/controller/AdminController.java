@@ -17,15 +17,15 @@ public class AdminController {
     public String viewHomePage() {
         return "pages/dashboard";
     }
-    @RequestMapping("/dashboard")
+    @GetMapping("/dashboard")
     public String viewHomePage(Model model) {
         return "pages/dashboard";
     }
-    @RequestMapping("/form")
+    @GetMapping("/form")
     public String viewForm(Model model) {
         return "pages/form-elements";
     }
-    @RequestMapping("/table")
+    @GetMapping("/table")
     public String viewTable(Model model) {
         return "pages/table-elements";
     }
