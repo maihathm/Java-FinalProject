@@ -31,6 +31,9 @@ public class Order {
     @Column
     private String message;
 
+    @ManyToOne
+    private User user;
+
     @OneToMany(mappedBy = "order", fetch = FetchType.EAGER)
     private Set<OrderDetail> orderDetails;
 

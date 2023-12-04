@@ -1,12 +1,18 @@
 package com.example.midterm;
 
+import java.util.HashSet;
+import java.util.Set;
+
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
-import com.example.midterm.services.ProductService;
+import com.example.midterm.model.Role;
+import com.example.midterm.model.User;
+import com.example.midterm.repos.RoleRepository;
+import com.example.midterm.repos.UserRepository;
 
 @SpringBootApplication
 public class MidtermApplication {
@@ -16,15 +22,22 @@ public class MidtermApplication {
     }
 
     @Bean
-    CommandLineRunner demo(ProductService productService) {
+    CommandLineRunner demo(
+            RoleRepository roleRepository,
+            UserRepository userRepository,
+            PasswordEncoder passwordEncoder) {
         return (args) -> {
             System.out.println("Web Application is running...");
-            // String rawPassword = "123"; // Mật khẩu nguyên bản cần mã hóa
-            // BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
-            // String encodedPassword = passwordEncoder.encode(rawPassword); // Mã hóa mật khẩu
-
-            // System.out.println("Mật khẩu nguyên bản: " + rawPassword);
-            // System.out.println("Mật khẩu đã mã hóa: " + encodedPassword);
+            // Role adminRole = roleRepository.save(new Role("ADMIN"));
+            // Role userRole = roleRepository.save(new Role("USER"));
+            // Set<Role> adminRoles = new HashSet<>();
+            // adminRoles.add(adminRole);
+            // Set<Role> userRoles = new HashSet<>();
+            // userRoles.add(userRole);
+            // User admin = new User("admin@example.com", "admin", passwordEncoder.encode("123"), adminRoles);
+            // User user = new User("user@example.com", "user", passwordEncoder.encode("123"), userRoles);
+            // userRepository.save(admin);
+            // userRepository.save(user);
         };
     }
 }

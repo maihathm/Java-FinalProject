@@ -10,7 +10,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 public class MvcConfiguration implements WebMvcConfigurer {
 
     @Bean
-    public LayoutDialect layoutDialect() {
+    LayoutDialect layoutDialect() {
         return new LayoutDialect();
     }
 
