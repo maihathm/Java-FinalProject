@@ -3,6 +3,8 @@ package com.example.midterm.repos;
 import com.example.midterm.model.Brand;
 import com.example.midterm.model.Category;
 import com.example.midterm.model.Product;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -19,6 +21,13 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
     List<Product> findByNameContainingIgnoreCase(String name);
 
     List<Product> findAllByHot(boolean isHot);
+
+    Page<Product> findByBrandId(Long brandId, Pageable pageable);
+
+    Page<Product> findByCategoryId(Long categoryId, Pageable pageable);
+
+    Page<Product> findAll(Pageable pageable);
+
 
     @Transactional
     @Modifying
