@@ -137,6 +137,7 @@
 
         <!-- Jumbotron -->
     </header>
+
     <!-- Products -->
     <section>
         <div class="container my-5">
@@ -153,10 +154,10 @@
                             <h5 class="card-title" th:text="${prod.name}"></h5>
                             <p class="card-text" th:text="'₫' + ${#numbers.formatInteger(prod.price, 3, 'POINT')}"></p>
                             <p class="card-text" th:text="${'Stock: ' + prod.quantity}"></p>
-                            <form th:action="@{/cart}" method="post">
+                            <form method="post">
                                 <input type="number" name="productId" th:value="${prod.id}" class="d-none">
                                 <div class="card-footer d-flex align-items-end pt-3 px-0 pb-0 mt-auto">
-                                    <button type="submit" class="btn btn-primary shadow-0 me-1">
+                                    <button type="submit" class="btn btn-primary shadow-0 me-1 btn-add-to-cart" th:data-product-id="${prod.id}">
                                         Add to cart
                                     </button>
                                     <input name="quantity" type="number" min="1" value="1" class="w-25" th:max="${prod.quantity}">
@@ -348,9 +349,40 @@
     </footer>
     <!-- Footer -->
     <!-- MDB -->
-    <script
-            type="text/javascript"
-            src="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/6.4.1/mdb.min.js"
-    ></script>
+
 </body>
+<script
+        type="text/javascript"
+        src="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/6.4.1/mdb.min.js"
+></script>
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        // Gọi hàm để cập nhật số lượng sản phẩm trong giỏ hàng
+
+        // Thêm sự kiện cho nút thêm vào giỏ hàng
+        const addToCartButtons = document.querySelectorAll('.btn-add-to-cart');
+        addToCartButtons.forEach(button => {
+            button.addEventListener('click', function (event) {
+                event.preventDefault();
+                const productId = this.dataset.productId;
+                const quantity = 1; // Số lượng có thể thay đổi tùy thuộc vào cách bạn xử lý
+                addToCart(productId, quantity);
+            });
+        });
+
+        // Hàm để thêm sản phẩm vào giỏ hàng
+        function addToCart(productId, quantity) {
+            console.log(productId,quantity)
+            fetch(`/add-to-cart?productId=${productId}&quantity=${quantity}`)
+                .then(response => response.json())
+                .then(data => {
+                    const badge = document.querySelector('.badge');
+                    if (badge) {
+                        badge.textContent = data;
+                    }
+                })
+                .catch(error => console.error('Error adding to cart:', error));
+        }
+    });
+</script>
 </html>
