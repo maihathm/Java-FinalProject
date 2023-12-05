@@ -2,6 +2,7 @@ package com.example.midterm.controller;
 
 import com.example.midterm.dto.AddToCartDTO;
 import com.example.midterm.model.CartItem;
+import com.example.midterm.model.OrderDetail;
 import com.example.midterm.model.Product;
 import com.example.midterm.repos.CartItemRepository;
 import com.example.midterm.repos.RoleRepository;
@@ -28,15 +29,24 @@ public class HomeController {
     private final ShoppingCartService shoppingCartService;
     private final CartItemRepository cartItemRepository;
     private final CartItemSerivce cartItemSerivce;
+    private final OrderService orderService;
+    private final OrderDetailService orderDetailService;
+
 
     @GetMapping("/")
-    public String home(Model model, Principal principal) throws Exception {
+    public String home(Model model, Principal principal
+    ,@RequestParam(value = "page", required = false, defaultValue = "0") int page) throws Exception {
         if(principal != null){
             List<CartItem> list = cartItemSerivce.getCartItemByUser(principal.getName());
             model.addAttribute("cartItems",list);
             model.addAttribute("user",principal.getName());
         }
-        model.addAttribute("hotProducts", productService.getAllHotProducts());
+        int pageSize = 4;
+        model.addAttribute("currentPage", page);
+        Page<Product> productPage = productService.getProdutsByHot(true,page, pageSize);
+        model.addAttribute("totalPages", productPage.getTotalPages());
+        model.addAttribute("totalItems", productPage.getTotalElements());
+        model.addAttribute("hotProducts", productPage.getContent());
         model.addAttribute("allBrands", brandService.getAllBrand());
         model.addAttribute("allCategories", categoryService.getAllCategories());
         return "index";
@@ -144,5 +154,27 @@ public class HomeController {
             // Trả về một phản hồi lỗi nếu có lỗi xảy ra
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(0);
         }
+    }
+
+
+    @GetMapping("/list-order")
+    public String viewOrderPage(Model model, Principal principal) {
+        model.addAttribute("allCategories",categoryService.getAllCategories());
+        model.addAttribute("allBrands", brandService.getAllBrand());
+        List<CartItem> list = cartItemSerivce.getCartItemByUser(principal.getName());
+        model.addAttribute("cartItems",list);
+        model.addAttribute("allOrders",orderService.getAllByUser(principal.getName()));
+        model.addAttribute("user",principal.getName());
+        return "list_order";
+    }
+
+    @RequestMapping("/detail/{id}")
+    public String viewOrderDetailPage(@PathVariable(name = "id") long id,Model model , Principal principal) {
+        List<OrderDetail> orderDetail = orderDetailService.getOrderDetail(id);
+        List<CartItem> list = cartItemSerivce.getCartItemByUser(principal.getName());
+        model.addAttribute("cartItems",list);
+        model.addAttribute("orderDetail", orderDetail);
+        model.addAttribute("user",principal.getName());
+        return "list_orderDetail";
     }
 }

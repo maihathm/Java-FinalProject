@@ -24,7 +24,7 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
     List<Product> searchAllBy(@Param("name") String name);
 
     List<Product> findAllByHot(boolean isHot);
-
+    Page<Product> findAllByHot(boolean isHot, Pageable pageable);
     Page<Product> findByBrandId(Long brandId, Pageable pageable);
 
     Page<Product> findByCategoryId(Long categoryId, Pageable pageable);

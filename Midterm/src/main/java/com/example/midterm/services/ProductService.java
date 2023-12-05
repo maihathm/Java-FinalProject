@@ -66,6 +66,11 @@ public class ProductService {
         return productRepository.findAll(pageable);
     }
 
+    public Page<Product> getProdutsByHot(boolean isHot,int page, int size){
+        Pageable pageable = PageRequest.of(page,size);
+        return productRepository.findAllByHot(isHot,pageable);
+    }
+
     public List<Product> searchProductsByNameFilter(String name,String color,String priceRange) {
         Long minPrice = Long.valueOf(priceRange.split("-")[0]);
         Long maxPrice = Long.valueOf(priceRange.split("-")[1]);
