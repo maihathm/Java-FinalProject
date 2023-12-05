@@ -32,7 +32,8 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
 
     Page<Product> findAll(Pageable pageable);
 
-    @Query("SELECT p FROM Product p WHERE LOWER(p.name) LIKE %:name% AND p.price BETWEEN :minPrice AND :maxPrice AND LOWER(p.color) LIKE %:color%")
+
+    @Query("SELECT p FROM Product p WHERE (LOWER(p.name) LIKE %:name% or LOWER(p.color) LIKE %:name% or LOWER(p.category.name) LIKE %:name% or LOWER(p.brand.name) LIKE %:name%) AND p.price BETWEEN :minPrice AND :maxPrice AND LOWER(p.color) LIKE %:color%")
     List<Product> searchNameFilter(@Param("name") String name, @Param("color") String color, @Param("minPrice") Long minPrice, @Param("maxPrice") Long maxPrice);
 
     @Query("SELECT p FROM Product p WHERE p.brand.id = :brandId AND LOWER(p.color) LIKE %:color% AND p.price BETWEEN :minPrice AND :maxPrice")

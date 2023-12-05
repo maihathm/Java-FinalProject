@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.Data;
 
 import java.util.Date;
+import java.util.Objects;
 import java.util.Set;
 
 @Entity
@@ -50,5 +51,10 @@ public class Order {
 
     public void setOrderDate(Date orderDate) {
         this.orderDate = orderDate;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id);
     }
 }

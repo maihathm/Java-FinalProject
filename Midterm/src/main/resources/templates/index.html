@@ -34,7 +34,7 @@
                             Truc's Shop
                         </a>
                         <br></br>
-                        <a href="/admin" class="float-start">
+                        <a th:if="${user == admin}" href="/admin" class="float-start">
                             Admin Product
                         </a>
                     </div>
@@ -44,6 +44,8 @@
                     <!-- Center elements -->
                     <div class="order-lg-last col-lg-5 col-sm-8 col-8">
                         <div class="d-flex float-end">
+                            <a th:if="${user != null}" href="/logout" class="me-1 border rounded py-1 px-3 nav-link d-flex align-items-center"> <i class="fas fa-user-alt m-1 me-md-2"></i><p class="d-none d-md-block mb-0">Sign out</p> </a>
+                            <a th:unless="${user != null}" th:href="'/oauth2/authorization/facebook'" class="me-1 border rounded py-1 px-3 nav-link d-flex align-items-center"> <i class="fas fa-user-alt m-1 me-md-2"></i><p class="d-none d-md-block mb-0">Sign in</p> </a>
                             <a href="/cart" class="border rounded py-1 px-3 nav-link d-flex align-items-center position-relative">
                                 <i class="fas fa-shopping-cart m-1 me-md-2"></i>
                                 <p class="d-none d-md-block mb-0">My cart</p>
@@ -146,6 +148,7 @@
             </header>
 
             <div class="row">
+
                 <div class="col-lg-3 col-md-6 col-sm-6 d-flex" th:each="prod : ${hotProducts}">
                     <!--/*@thymesVar id="prod" type="com.example.midterm.model.Product"*/-->
                     <div class="card w-100 my-2 shadow-2-strong">
@@ -155,6 +158,7 @@
                             <p class="card-text" th:text="'₫' + ${#numbers.formatInteger(prod.price, 3, 'POINT')}"></p>
                             <p class="card-text" th:text="${'Stock: ' + prod.quantity}"></p>
                             <form method="post">
+                                <input name="userCart" th:if="${userCart != null}" th:value="${userCart}" type="hidden" >
                                 <input type="number" name="productId" th:value="${prod.id}" class="d-none">
                                 <div class="card-footer d-flex align-items-end pt-3 px-0 pb-0 mt-auto">
                                     <button type="submit" class="btn btn-primary shadow-0 me-1 btn-add-to-cart" th:data-product-id="${prod.id}">

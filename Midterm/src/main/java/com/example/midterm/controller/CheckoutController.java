@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import java.security.Principal;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicReference;
 
@@ -42,10 +43,11 @@ public class CheckoutController {
             @RequestParam String address,
             @RequestParam String city,
             @RequestParam String message,
-            Model model
+            Model model,
+            Principal principal
     ) throws Exception {
 
-        shoppingCartService.checkout(name, email, address + city, message);
+        shoppingCartService.checkout(name, email, address + city, message, principal.getName());
 
         return "success";
     }

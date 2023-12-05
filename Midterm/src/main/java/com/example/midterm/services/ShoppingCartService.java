@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.HashSet;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -43,6 +44,8 @@ public class ShoppingCartService {
         CartItem cartItem = cartItemRepository.findByProduct(product).orElse(new CartItem());
         cartItem.setProduct(product);
         cartItem.setQuantity(cartItem.getQuantity() + cartItemDTO.getQuantity());
+        User user = userRepository.findByUsername(cartItemDTO.getUsername()).orElseThrow();
+        cartItem.setUser(user);
         if (cartItem.getQuantity() > product.getQuantity()) {
             cartItem.setQuantity(product.getQuantity());
         }
@@ -51,11 +54,12 @@ public class ShoppingCartService {
     }
 
     @Transactional
-    public void removeProductFromCart(String productId) {
+    public void removeProductFromCart(String productId, String username) {
 
         Product product = productRepository.findById(Long.valueOf(productId)).orElseThrow();
+        User user = userRepository.findByUsername(username).orElseThrow();
 
-        cartItemRepository.deleteByProduct(product);
+        cartItemRepository.deleteByProductAndUser(product,user);
     }
 
     private boolean validateQuantity(Long prodId, Long quantity) {
@@ -94,19 +98,21 @@ public class ShoppingCartService {
         cartItemRepository.save(cartItem);
     }
 
+
     @Transactional
-    public void checkout(String name, String email, String address, String message) {
+    public void checkout(String name, String email, String address, String message, String username) {
         Set<CartItem> allCartItems = new HashSet<>(getCartItems());
         Long total = getTotalPrice();
         System.out.println("-----------------Creating Order-------------");
         Order order = new Order();
+        User user = userRepository.findByUsername(username).orElseThrow();
         order.setAddress(address);
         order.setName(name);
         order.setEmail(email);
         order.setMessage(message);
         order.setTotal(total);
         order.setOrderDetails(new HashSet<>());
-
+        order.setUser(user);
         orderRepository.save(order);
 
         System.out.println("-----------------Add Order Detail-------------");
@@ -116,8 +122,12 @@ public class ShoppingCartService {
             orderDetail.setProduct(cartItem.getProduct());
             orderDetail.setOrder(order);
             orderDetailRepository.save(orderDetail);
+            long updateproduct = cartItem.getProduct().getQuantity() - cartItem.getQuantity();
+            Product product = cartItem.getProduct();
+            product.setQuantity(updateproduct);
+            productRepository.save(product);
 
-            removeProductFromCart(cartItem.getProduct().getId().toString());
+            removeProductFromCart(cartItem.getProduct().getId().toString(),username);
         }));
     }
 }

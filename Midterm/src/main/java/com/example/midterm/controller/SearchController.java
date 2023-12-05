@@ -22,14 +22,18 @@ public class SearchController {
     private final CategoryService categoryService;
     private final BrandService brandService;
     private final CartItemRepository cartItemRepository;
+    private final CartItemSerivce cartItemSerivce;
 
     @GetMapping("/search")
-    public String search(
+    public String search(Principal principal,
             @RequestParam(value = "name") String name,
             Model model
     ) throws Exception {
-        List<CartItem> list = cartItemRepository.findAll();
-        model.addAttribute("cartItems",list);
+        if(principal != null){
+            List<CartItem> list = cartItemSerivce.getCartItemByUser(principal.getName());
+            model.addAttribute("cartItems",list);
+            model.addAttribute("user",principal.getName());
+        }
         model.addAttribute("allCategories",  categoryService.getAllCategories());
         model.addAttribute("allBrands", brandService.getAllBrand());
         model.addAttribute("result", productService.searchProductsByMultiData(name));
@@ -38,7 +42,7 @@ public class SearchController {
     }
 
     @GetMapping("/filter")
-    public String filter(
+    public String filter(Principal principal,
             @RequestParam(value = "productName") String name,
             @RequestParam(value = "productColor") String color,
             @RequestParam(value = "productPriceRange") String priceRange,
@@ -49,36 +53,27 @@ public class SearchController {
         if(priceRange.isEmpty()){
             priceRange = "0-99999999";
         }
-        if(!brandId.isEmpty()){
-            List<CartItem> list = cartItemRepository.findAll();
+        if(principal != null){
+            List<CartItem> list = cartItemSerivce.getCartItemByUser(principal.getName());
             model.addAttribute("cartItems",list);
+            model.addAttribute("user",principal.getName());
+        }
+        model.addAttribute("productPriceRange",priceRange);
+        model.addAttribute("productColor",color);
+        model.addAttribute("allCategories",  categoryService.getAllCategories());
+        model.addAttribute("allBrands", brandService.getAllBrand());
+        if(!brandId.isEmpty()){
             model.addAttribute("result", productService.searchProductsByBrandFilter(Long.valueOf(brandId),color,priceRange));
             model.addAttribute("productBrandId", brandId);
-            model.addAttribute("productPriceRange",priceRange);
-            model.addAttribute("productColor",color);
-            model.addAttribute("allCategories",  categoryService.getAllCategories());
-            model.addAttribute("allBrands", brandService.getAllBrand());
         }
         else if(!categoryId.isEmpty()){
-            List<CartItem> list = cartItemRepository.findAll();
-            model.addAttribute("cartItems",list);
             model.addAttribute("result", productService.searchProductsByCategoryFilter(Long.valueOf(categoryId),color,priceRange));
             model.addAttribute("productCategoryId", categoryId);
-            model.addAttribute("productPriceRange",priceRange);
-            model.addAttribute("productColor",color);
-            model.addAttribute("allCategories",  categoryService.getAllCategories());
-            model.addAttribute("allBrands", brandService.getAllBrand());
 
         }
         else{
-            List<CartItem> list = cartItemRepository.findAll();
-            model.addAttribute("cartItems",list);
             model.addAttribute("result", productService.searchProductsByNameFilter(name,color,priceRange));
             model.addAttribute("productName", name);
-            model.addAttribute("productPriceRange",priceRange);
-            model.addAttribute("productColor",color);
-            model.addAttribute("allCategories",  categoryService.getAllCategories());
-            model.addAttribute("allBrands", brandService.getAllBrand());
         }
         return "search";
     }

@@ -1,7 +1,9 @@
 package com.example.midterm.services;
 
+import com.example.midterm.dto.UserDTO;
 import com.example.midterm.model.Role;
 import com.example.midterm.model.User;
+import com.example.midterm.repos.RoleRepository;
 import com.example.midterm.repos.UserRepository;
 import lombok.AllArgsConstructor;
 
@@ -21,6 +23,8 @@ public class UserService implements UserDetailsService {
     @Autowired
     private UserRepository userRepository;
 
+    private RoleRepository roleRepository;
+
     @Autowired
     private PasswordEncoder passwordEncoder;
 
@@ -34,6 +38,14 @@ public class UserService implements UserDetailsService {
     };
 
     // save user
+    public User save(UserDTO user) {
+        User newUser = new User();
+        newUser.setPassword(user.getPassword());
+        newUser.setUsername(user.getUsername());
+        newUser.setEmail(user.getEmail());
+        return userRepository.save(newUser);
+    }
+
     public void save(User user) {
         userRepository.save(user);
     }
@@ -43,4 +55,11 @@ public class UserService implements UserDetailsService {
         System.out.println("loadUserByUsername");
         return userRepository.findByUsername(username).orElseThrow(() -> new UsernameNotFoundException("User not found"));
     }
+
+    public User findByUsername(String username){
+        return userRepository.findByUsername(username).orElse(null);
+    }
+
+
+
 }
