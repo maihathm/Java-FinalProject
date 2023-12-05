@@ -7,6 +7,7 @@ import org.springframework.security.authentication.ProviderManager;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -32,8 +33,25 @@ public class SecurityConfiguaration {
         SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
                 return http
                                 .csrf((csrf) -> csrf.disable())
-                                .authorizeHttpRequests((authorize) -> authorize.anyRequest().authenticated())
-                                .formLogin((login)->login.defaultSuccessUrl("/"))
+                                .authorizeHttpRequests((authorize) -> authorize
+                                                .requestMatchers("/", "/category", "/shop", "/brand", "/search",
+                                                                "/filter", "/checkout")
+                                                .permitAll()
+                                                .requestMatchers("/admin/**").hasAuthority("ADMIN")
+                                                .requestMatchers("/cart", "/order").authenticated())
+                                .formLogin((login) -> login
+                                                .defaultSuccessUrl("/")
+                                                .successHandler((request, response, authentication) -> {
+                                                        if (authentication.getName().equals("admin")) {
+                                                                response.sendRedirect("/admin");
+                                                        } else {
+                                                                response.sendRedirect("/");
+                                                        }
+                                                })
+                                                .permitAll())
+                                .sessionManagement(
+                                                session -> session.sessionCreationPolicy(
+                                                                SessionCreationPolicy.IF_REQUIRED))
                                 .build();
         }
 }

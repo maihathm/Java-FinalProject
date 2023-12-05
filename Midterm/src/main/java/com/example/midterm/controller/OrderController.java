@@ -11,12 +11,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @RequestMapping("/admin/order")
 public class OrderController {
 
-    private final OrderService orderService;
-
     @Autowired
-    public OrderController(OrderService orderService) {
-        this.orderService = orderService;
-    }
+    private OrderService orderService;
+
+    
 
     @GetMapping
     public String viewOrderPage(Model model) {
