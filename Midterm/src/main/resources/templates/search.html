@@ -100,6 +100,28 @@
                         <li class="nav-item">
                             <a class="nav-link text-dark" aria-current="page" href="/shop">Shop</a>
                         </li>
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle text-dark" href="#" id="navbarDropdownBrand" role="button" data-mdb-toggle="dropdown" aria-expanded="false">
+                                Brand
+                            </a>
+                            <ul class="dropdown-menu" aria-labelledby="navbarDropdownBrand">
+                                <li th:each="brand: ${allBrands}">
+                                    <!--/*@thymesVar id="brand" type="com.example.midterm.model.Brand"*/-->
+                                    <a class="dropdown-item" th:href="'/brand?id=' + ${brand.id}" href="" th:text="${brand.name}"></a>
+                                </li>
+                            </ul>
+                        </li>
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle text-dark" href="#" id="navbarDropdownCategory" role="button" data-mdb-toggle="dropdown" aria-expanded="false">
+                                Category
+                            </a>
+                            <ul class="dropdown-menu" aria-labelledby="navbarDropdownCategory">
+                                <li th:each="category: ${allCategories}">
+                                    <!--/*@thymesVar id="category" type="com.example.midterm.model.Category"*/-->
+                                    <a class="dropdown-item" th:href="'/category?id=' + ${category.id}" href="" th:text="${category.name}"></a>
+                                </li>
+                            </ul>
+                        </li>
 
                     </ul>
                     <!-- Left links -->
@@ -109,6 +131,45 @@
         </nav>
         <!-- Navbar -->
     </header>
+    </br>
+<form action="/filter" method="get" style="text-align: center">
+    <i class="fa fa-filter" aria-hidden="true"></i>
+    <!-- Filter inputs -->
+    <label > Filter: </label>
+
+    <label for="productPriceRange">Price Range:</label>
+    <select id="productPriceRange" class="form-group no-wrap" th:value="${productPriceRange}" name="productPriceRange">
+        <option value="">Price Range</option>
+        <option value="0-5000000"> < 5tr</option>
+        <option value="5000000-10000000">5tr - 10tr</option>
+        <option value="10000000-20000000">10tr - 20tr</option>
+        <option value="20000000-30000000">20tr - 30tr</option>
+        <option value="30000000-999999999"> > 30tr</option>
+    </select>
+
+    <label for="color" >Color:</label>
+    <select id="color" class="form-group no-wrap" name="productColor">
+        <option value="">Color</option>
+        <option value="Black">Black</option>
+        <option value="Blue">Blue</option>
+        <option value="Pink">Pink</option>
+        <option value="Natural">Natural</option>
+        <option value="Yellow">Yellow</option>
+    </select>
+
+    <input name="productName" th:if="${productName != null}" th:value="${productName}" type="hidden" >
+    <input name="productName" th:unless="${productName != null}" value="" type="hidden" >
+
+    <input name="productBrandId" th:if="${productBrandId != null}" th:value="${productBrandId}" type="hidden" >
+    <input name="productBrandId" th:unless="${productBrandId != null}" value="" type="hidden" >
+
+    <input name="productCategoryId" th:if="${productCategoryId != null}" th:value="${productCategoryId}" type="hidden" >
+    <input name="productCategoryId" th:unless="${productCategoryId != null}" value="" type="hidden" >
+    <!-- Filter button -->
+    <button type="submit" class="btn btn-primary shadow-0">
+        <i class="fas fa-filter"></i>
+    </button>
+</form>
     <!-- Products -->
     <section>
         <div class="container my-5" th:if="${#lists.isEmpty(result)}">
@@ -129,10 +190,10 @@
                             <h5 class="card-title" th:text="${product.name}"></h5>
                             <p class="card-text" th:text="'₫' + ${#numbers.formatInteger(product.price, 3, 'POINT')}"></p>
                             <p class="card-text" th:text="${'Stock: ' + product.quantity}"></p>
-                            <form th:action="@{/cart}" method="post">
+                            <form  method="post">
                                 <input type="number" name="productId" th:value="${product.id}" class="d-none">
                                 <div class="card-footer d-flex align-items-end pt-3 px-0 pb-0 mt-auto">
-                                    <button type="submit" class="btn btn-primary shadow-0 me-1">
+                                    <button type="submit" class="btn btn-primary shadow-0 me-1 btn-add-to-cart" th:data-product-id="${product.getId()}">
                                         Add to cart
                                     </button>
                                     <input name="quantity" type="number" min="1" value="1" class="w-25" th:max="${product.quantity}">
@@ -324,9 +385,39 @@
     </footer>
     <!-- Footer -->
     <!-- MDB -->
-    <script
-            type="text/javascript"
-            src="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/6.4.1/mdb.min.js"
-    ></script>
 </body>
+<script
+        type="text/javascript"
+        src="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/6.4.1/mdb.min.js"
+></script>
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        // Gọi hàm để cập nhật số lượng sản phẩm trong giỏ hàng
+
+        // Thêm sự kiện cho nút thêm vào giỏ hàng
+        const addToCartButtons = document.querySelectorAll('.btn-add-to-cart');
+        addToCartButtons.forEach(button => {
+            button.addEventListener('click', function (event) {
+                event.preventDefault();
+                const productId = this.dataset.productId;
+                const quantity = 1; // Số lượng có thể thay đổi tùy thuộc vào cách bạn xử lý
+                addToCart(productId, quantity);
+            });
+        });
+
+        // Hàm để thêm sản phẩm vào giỏ hàng
+        function addToCart(productId, quantity) {
+            console.log(productId,quantity)
+            fetch(`/add-to-cart?productId=${productId}&quantity=${quantity}`)
+                .then(response => response.json())
+                .then(data => {
+                    const badge = document.querySelector('.badge');
+                    if (badge) {
+                        badge.textContent = data;
+                    }
+                })
+                .catch(error => console.error('Error adding to cart:', error));
+        }
+    });
+</script>
 </html>
