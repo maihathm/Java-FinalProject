@@ -137,6 +137,44 @@
     </header>
     <!-- Products -->
     <section>
+        <form action="/filter" method="get" style="text-align: center">
+            <i class="fa fa-filter" aria-hidden="true"></i>
+            <!-- Filter inputs -->
+            <label > Filter: </label>
+
+            <label for="productPriceRange">Price Range:</label>
+            <select id="productPriceRange" class="form-group no-wrap" name="productPriceRange">
+                <option value="">Price Range</option>
+                <option value="0-5000000"> < 5tr</option>
+                <option value="5000000-10000000">5tr - 10tr</option>
+                <option value="10000000-20000000">10tr - 20tr</option>
+                <option value="20000000-30000000">20tr - 30tr</option>
+                <option value="30000000-999999999"> > 30tr</option>
+            </select>
+
+            <label for="color" >Color:</label>
+            <select id="color" class="form-group no-wrap" name="productColor">
+                <option value="">Color</option>
+                <option value="Black">Black</option>
+                <option value="Blue">Blue</option>
+                <option value="Pink">Pink</option>
+                <option value="Natural">Natural</option>
+                <option value="Yellow">Yellow</option>
+            </select>
+
+            <input name="productName" th:if="${productName != null}" th:value="${productName}" type="hidden" >
+            <input name="productName" th:unless="${productName != null}" value="" type="hidden" >
+
+            <input name="productBrandId" th:if="${productBrandId != null}" th:value="${productBrandId}" type="hidden" >
+            <input name="productBrandId" th:unless="${productBrandId != null}" value="" type="hidden" >
+
+            <input name="productCategoryId" th:if="${productCategoryId != null}" th:value="${productCategoryId}" type="hidden" >
+            <input name="productCategoryId" th:unless="${productCategoryId != null}" value="" type="hidden" >
+            <!-- Filter button -->
+            <button type="submit" class="btn btn-primary shadow-0">
+                <i class="fas fa-filter"></i>
+            </button>
+        </form>
         <div class="container my-5">
             <!--/*@thymesVar id="cate" type="com.example.midterm.model.Category"*/-->
             <div class="row">

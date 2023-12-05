@@ -29,6 +29,10 @@ public class ProductService {
         return productRepository.findByNameContainingIgnoreCase(name);
     }
 
+    public List<Product> searchProductsByMultiData(String name){
+        return productRepository.searchAllBy(name);
+    }
+
     public List<Product> listAll() {
         return productRepository.findAll();
     }
@@ -60,5 +64,23 @@ public class ProductService {
     public Page<Product> getProductsByShop( int page, int size) {
         Pageable pageable = PageRequest.of(page, size);
         return productRepository.findAll(pageable);
+    }
+
+    public List<Product> searchProductsByNameFilter(String name,String color,String priceRange) {
+        Long minPrice = Long.valueOf(priceRange.split("-")[0]);
+        Long maxPrice = Long.valueOf(priceRange.split("-")[1]);
+        return productRepository.searchNameFilter(name,color,minPrice,maxPrice);
+    }
+
+    public List<Product> searchProductsByBrandFilter(Long brandId,String color,String priceRange) {
+        Long minPrice = Long.valueOf(priceRange.split("-")[0]);
+        Long maxPrice = Long.valueOf(priceRange.split("-")[1]);
+        return productRepository.searchBrandFilter(brandId,color,minPrice,maxPrice);
+    }
+
+    public List<Product> searchProductsByCategoryFilter(Long categoryId,String color,String priceRange) {
+        Long minPrice = Long.valueOf(priceRange.split("-")[0]);
+        Long maxPrice = Long.valueOf(priceRange.split("-")[1]);
+        return productRepository.searchCategoryFilter(categoryId,color,minPrice,maxPrice);
     }
 }
