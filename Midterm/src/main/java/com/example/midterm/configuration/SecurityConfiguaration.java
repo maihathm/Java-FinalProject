@@ -38,6 +38,8 @@ public class SecurityConfiguaration {
                                                                 "/filter", "/checkout")
                                                 .permitAll()
                                                 .requestMatchers("/admin/**").hasAuthority("ADMIN")
+                                                .requestMatchers("/static/**", "/vendors/**","/js/**",
+                                                "/css/**","/images/**").permitAll()
                                                 .requestMatchers("/cart", "/order").authenticated())
                                 .formLogin((login) -> login
                                                 .defaultSuccessUrl("/")
