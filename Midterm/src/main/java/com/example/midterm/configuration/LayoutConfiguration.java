@@ -7,10 +7,10 @@ import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 @Configuration
-public class MvcConfiguration implements WebMvcConfigurer {
+public class LayoutConfiguration implements WebMvcConfigurer {
 
     @Bean
-    LayoutDialect layoutDialect() {
+    public LayoutDialect layoutDialect() {
         return new LayoutDialect();
     }
 
