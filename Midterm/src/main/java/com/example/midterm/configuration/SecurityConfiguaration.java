@@ -39,7 +39,8 @@ public class SecurityConfiguaration {
                                                 .requestMatchers("/", "/category", "/shop", "/brand", "/search",
                                                                 "/filter", "/checkout","cart/**","/do-register","/register")
                                                 .permitAll()
-                                                .requestMatchers("/admin/**").hasAuthority("ADMIN").requestMatchers("/static/**", "/vendors/**","/js/**",
+                                                .requestMatchers("/admin/**").hasAuthority("ADMIN")
+                                                .requestMatchers("/static/**", "/vendors/**","/js/**",
                                                 "/css/**","/images/**").permitAll()
                                                 .requestMatchers("/cart", "/order","/add-to-cart").authenticated())
                                 .formLogin((login) -> login.loginPage("/login")
