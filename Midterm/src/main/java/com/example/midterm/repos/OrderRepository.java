@@ -1,6 +1,7 @@
 package com.example.midterm.repos;
 
 import com.example.midterm.model.Order;
+import com.example.midterm.model.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;

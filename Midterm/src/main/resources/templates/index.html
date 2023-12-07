@@ -159,7 +159,8 @@
                         <div class="card-body d-flex flex-column">
                             <h5 class="card-title" th:text="${prod.name}"></h5>
                             <p class="card-text" th:text="'₫' + ${#numbers.formatInteger(prod.price, 3, 'POINT')}"></p>
-                            <p class="card-text" th:text="${'Stock: ' + prod.quantity}"></p>
+                            <p th:if="${prod.quantity > 0}" class="card-text" th:text="${'Stock: ' + prod.quantity}"></p>
+                            <p th:if="${prod.quantity == 0}" class="card-text text-danger" >Out of stock</p>
                             <form method="post">
                                 <input name="userCart" th:if="${userCart != null}" th:value="${userCart}" type="hidden" >
                                 <input type="number" name="productId" th:value="${prod.id}" class="d-none">
@@ -167,7 +168,7 @@
                                     <button type="submit" class="btn btn-primary shadow-0 me-1 btn-add-to-cart" th:data-product-id="${prod.id}">
                                         Add to cart
                                     </button>
-                                    <input name="quantity" type="number" min="1" value="1" class="w-25" th:max="${prod.quantity}">
+                                    <input th:if="${prod.quantity > 0}" name="quantity" type="number" min="1" value="1" class="w-25" th:max="${prod.quantity}">
                                 </div>
                             </form>
                         </div>
@@ -387,7 +388,10 @@
             button.addEventListener('click', function (event) {
                 event.preventDefault();
                 const productId = this.dataset.productId;
-                const quantity = 1; // Số lượng có thể thay đổi tùy thuộc vào cách bạn xử lý
+                const quantityInput = this.parentElement.querySelector('input[name="quantity"]');
+
+                // Kiểm tra xem có tồn tại giá trị hay không
+                const quantity = quantityInput ? parseInt(quantityInput.value) : 1;
                 addToCart(productId, quantity);
             });
         });

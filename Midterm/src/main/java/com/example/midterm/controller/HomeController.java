@@ -136,7 +136,9 @@ public class HomeController {
             @RequestParam("productId") Long productId,
             @RequestParam("quantity") int quantity, Principal principal) {
         System.out.println(productId);
-
+        if(quantity == 0){
+            return ResponseEntity.ok(cartItemSerivce.getCartItemByUser(principal.getName()).size());
+        }
         try {
             // Thực hiện thêm sản phẩm vào giỏ hàng
             AddToCartDTO addToCartDTO = new AddToCartDTO();
