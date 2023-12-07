@@ -18,7 +18,8 @@ public class CartItem {
     @ManyToOne
     private Product product;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "user_id")
     private User user;
 
     @Override

@@ -32,9 +32,9 @@
                                 <td th:text="${category.id}">Category ID</td>
                                 <td th:text="${category.name}">Name</td>
                                 <td>
-                                    <a th:href="@{'/admin/category/edit/' + ${category.id}}">Edit</a>
+                                    <a class="btn btn-warning btn-sm" th:href="@{'/admin/category/edit/' + ${category.id}}">Edit</a>
                                     &nbsp;&nbsp;&nbsp;
-                                    <a th:href="@{'/admin/category/delete/' + ${category.id}}">Delete</a>
+                                    <a class="btn btn-danger btn-sm" th:href="@{'/admin/category/delete/' + ${category.id}}">Delete</a>
                                 </td>
                             </tr>
                             </tbody>

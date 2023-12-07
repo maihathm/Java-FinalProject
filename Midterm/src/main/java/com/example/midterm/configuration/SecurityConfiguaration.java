@@ -12,8 +12,6 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
-import org.springframework.security.web.util.matcher.AndRequestMatcher;
-import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 @Configuration
 @EnableWebSecurity
@@ -36,6 +34,7 @@ public class SecurityConfiguaration {
                 return http
                                 .csrf((csrf) -> csrf.disable())
                                 .authorizeHttpRequests((authorize) -> authorize
+
                                                 .requestMatchers("/", "/category", "/shop", "/brand", "/search","/list-order",
                                                                 "/filter", "/checkout","cart/**","/do-register","/register")
                                                 .permitAll()
@@ -53,14 +52,9 @@ public class SecurityConfiguaration {
                                                         }
                                                 })
                                                 .permitAll())
-                                .logout(logout->logout.invalidateHttpSession(true)
-                                        .clearAuthentication(true)
-                                        .logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
-                                        .logoutSuccessUrl("/").permitAll()
-                                        )
-                                        .sessionManagement(
-                                                            session -> session.sessionCreationPolicy(
-                                                                        SessionCreationPolicy.IF_REQUIRED))
-                                        .build();
+                                .sessionManagement(
+                                                session -> session.sessionCreationPolicy(
+                                                                SessionCreationPolicy.IF_REQUIRED))
+                                .build();
         }
 }

@@ -1,6 +1,7 @@
 <!DOCTYPE html>
-<html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" xmlns:th="http://www.w3.org/1999/xhtml">
-
+<html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5"
+      lang="en">
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -32,17 +33,11 @@
             <ul class="navbar-nav navbar-nav-right">
                 <li class="nav-item dropdown d-none d-xl-inline-block">
                     <a class="nav-link dropdown-toggle" id="UserDropdown" href="#" data-toggle="dropdown" aria-expanded="false">
-                        <span class="profile-text">Hello, Richard V.Welsh !</span>
+                        <span class="profile-text">Hello, Administrator !</span>
                         <img class="img-xs rounded-circle" th:src="@{/images/faces/face1.jpg}" alt="Profile image">
                     </a>
                     <div class="dropdown-menu dropdown-menu-right navbar-dropdown" aria-labelledby="UserDropdown">
-                        <a class="dropdown-item mt-2">
-                            Manage Accounts
-                        </a>
-                        <a class="dropdown-item">
-                            Change Password
-                        </a>
-                        <a class="dropdown-item">
+                        <a class="dropdown-item" href="/logout">
                             Sign Out
                         </a>
                     </div>
@@ -66,9 +61,9 @@
                                 <img th:src="@{/images/faces/face1.jpg}" alt="profile image">
                             </div>
                             <div class="text-wrapper">
-                                <p class="profile-name">Richard V.Welsh</p>
+                                <p class="profile-name">Administrator</p>
                                 <div>
-                                    <small class="designation text-muted">Manager</small>
+                                    <small class="designation text-muted">Admin</small>
                                     <span class="status-indicator online"></span>
                                 </div>
                             </div>
@@ -101,59 +96,9 @@
                             <li class="nav-item">
                                 <a class="nav-link" href="/admin/order">Order</a>
                             </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="/admin/user">User</a>
-                            </li>
-                        </ul>
-                    </div>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" th:href="@{form-elements}">
-                        <i class="menu-icon mdi mdi-backup-restore"></i>
-                        <span class="menu-title">Form elements</span>
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#">
-                        <i class="menu-icon mdi mdi-chart-line"></i>
-                        <span class="menu-title">Charts</span>
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" th:href="@{table-elements}">
-                        <i class="menu-icon mdi mdi-table"></i>
-                        <span class="menu-title">Tables</span>
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#">
-                        <i class="menu-icon mdi mdi-sticker"></i>
-                        <span class="menu-title">Icons</span>
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" data-toggle="collapse" href="#auth" aria-expanded="false" aria-controls="auth">
-                        <i class="menu-icon mdi mdi-restart"></i>
-                        <span class="menu-title">User Pages</span>
-                        <i class="menu-arrow"></i>
-                    </a>
-                    <div class="collapse" id="auth">
-                        <ul class="nav flex-column sub-menu">
-                            <li class="nav-item">
-                                <a class="nav-link" href="#"> Blank Page </a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="#"> Login </a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="#"> Register </a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="#"> 404 </a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="#"> 500 </a>
-                            </li>
+<!--                            <li class="nav-item">-->
+<!--                                <a class="nav-link" href="/admin/user">User</a>-->
+<!--                            </li>-->
                         </ul>
                     </div>
                 </li>
@@ -171,10 +116,7 @@
             <footer class="footer">
                 <div class="container-fluid clearfix">
             <span class="text-muted d-block text-center text-sm-left d-sm-inline-block">Copyright © 2023
-              <a href="http://www.bootstrapdash.com/" target="_blank">Shoes Shop</a>. All rights reserved.</span>
-                    <span class="float-none float-sm-right d-block mt-1 mt-sm-0 text-center">Hand-crafted & made with
-              <i class="mdi mdi-heart text-danger"></i>
-            </span>
+              <a href="/" target="_blank">Shoes Shop</a>. All rights reserved.</span>
                 </div>
             </footer>
             <!-- partial -->
