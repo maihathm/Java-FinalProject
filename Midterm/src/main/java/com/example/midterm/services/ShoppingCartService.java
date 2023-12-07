@@ -50,10 +50,9 @@ public class ShoppingCartService {
             cartItem.setQuantity(product.getQuantity());
         }
 
-        if(product.getQuantity() == 0){
+        if(product.getQuantity() == 0 || cartItem.getQuantity() <= 0){
             return;
-        }
-
+        } 
         cartItemRepository.save(cartItem);
     }
 
