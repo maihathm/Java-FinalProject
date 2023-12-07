@@ -34,7 +34,7 @@
                             Truc's Shop
                         </a>
                         <br></br>
-                        <a th:if="${user == admin}" href="/admin" class="float-start">
+                        <a th:if="${user != null && user.equals('admin')}" href="/admin" class="float-start">
                             Admin Product
                         </a>
                     </div>
@@ -128,6 +128,9 @@
                                 </li>
                             </ul>
                         </li>
+                        <li th:if="${user!=null}" class="nav-item">
+                            <a class="nav-link text-dark" href="/list-order">My Order</a>
+                        </li>
                     </ul>
                     <!-- Left links -->
                 </div>
@@ -171,6 +174,21 @@
                     </div>
                 </div>
             </div>
+        </div>
+        <div class="container d-flex justify-content-center">
+            <nav aria-label="Page navigation">
+                <ul class="pagination">
+                    <li th:if="${currentPage > 0}" class="page-item">
+                        <a class="page-link" th:href="@{'/?page=' + ${currentPage - 1}}">Previous</a>
+                    </li>
+                    <li th:each="page : ${#numbers.sequence(0, totalPages - 1)}" th:class="${page == currentPage} ? 'page-item active' : 'page-item'">
+                        <a class="page-link" th:href="@{'/?page=' + ${page}}" th:text="${page + 1}"></a>
+                    </li>
+                    <li th:if="${currentPage < totalPages - 1}" class="page-item">
+                        <a class="page-link" th:href="@{'/?page=' + ${currentPage + 1}}">Next</a>
+                    </li>
+                </ul>
+            </nav>
         </div>
     </section>
     <!-- Products -->

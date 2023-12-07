@@ -33,6 +33,9 @@
                         <a href="/" class="float-start">
                             Truc's Shop
                         </a>
+                        <a th:if="${user.equals('admin')}" href="/admin" class="float-start">
+                            Admin Product
+                        </a>
                     </div>
                     <!-- Left elements -->
 
@@ -121,6 +124,9 @@
                                     <a class="dropdown-item" th:href="'/category?id=' + ${category.id}" href="" th:text="${category.name}"></a>
                                 </li>
                             </ul>
+                        </li>
+                        <li th:if="${user!=null}" class="nav-item">
+                            <a class="nav-link text-dark" href="/list-order">My Order</a>
                         </li>
 
                     </ul>

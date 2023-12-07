@@ -11,7 +11,11 @@ import java.util.Optional;
 public interface OrderRepository extends JpaRepository<Order, Long> {
 
     List<Order> findAll();
+
+
+    List<Order> findByUser(User user);
     Optional<Order> findById(Long id);
     @Query("SELECT COUNT(o) FROM Order o WHERE MONTH(o.orderDate) = :month")
     long countByMonth(@Param("month") int month);
+
 }

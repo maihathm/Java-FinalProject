@@ -34,15 +34,16 @@ public class SecurityConfiguaration {
                 return http
                                 .csrf((csrf) -> csrf.disable())
                                 .authorizeHttpRequests((authorize) -> authorize
-                                                .requestMatchers("/", "/category", "/shop", "/brand", "/search",
-                                                                "/filter", "/checkout")
+
+                                                .requestMatchers("/", "/category", "/shop", "/brand", "/search","/list-order",
+                                                                "/filter", "/checkout","cart/**","/do-register","/register")
                                                 .permitAll()
-                                                .requestMatchers("/admin/**").hasAuthority("ADMIN")
-                                                .requestMatchers("/static/**", "/vendors/**","/js/**",
+                                                .requestMatchers("/admin/**").hasAuthority("ADMIN").requestMatchers("/static/**", "/vendors/**","/js/**",
                                                 "/css/**","/images/**").permitAll()
-                                                .requestMatchers("/cart", "/order").authenticated())
-                                .formLogin((login) -> login
-                                                .defaultSuccessUrl("/")
+                                                .requestMatchers("/cart", "/order","/add-to-cart","/list-order","/detail/**").authenticated())
+                                .formLogin((login) -> login.loginPage("/login")
+                                                .loginProcessingUrl("/do-login")
+                                                .defaultSuccessUrl("/",true)
                                                 .successHandler((request, response, authentication) -> {
                                                         if (authentication.getName().equals("admin")) {
                                                                 response.sendRedirect("/admin");

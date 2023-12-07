@@ -1,6 +1,8 @@
 package com.example.midterm.services;
 
 import com.example.midterm.model.Order;
+
+import com.example.midterm.model.User;
 import com.example.midterm.repos.OrderDetailRepository;
 import com.example.midterm.repos.OrderRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,10 +18,12 @@ public class OrderService {
 
     private final OrderRepository orderRepository;
     private final OrderDetailRepository orderDetailRepository;
+    private final UserService userService;
     @Autowired
-    public OrderService(OrderRepository orderRepository, OrderDetailRepository orderDetailRepository) {
+    public OrderService(OrderRepository orderRepository, OrderDetailRepository orderDetailRepository,UserService userService) {
         this.orderRepository = orderRepository;
         this.orderDetailRepository = orderDetailRepository;
+        this.userService = userService;
     }
 
     public List<Order> getAllOrders() {
@@ -29,7 +33,6 @@ public class OrderService {
     public List<Order> getOrdersByMonthAndYear(int month, int year) {
         List<Order> allOrders = getAllOrders();
         List<Order> filteredOrders = new ArrayList<>();
-
         for (Order order : allOrders) {
             Calendar orderCalendar = Calendar.getInstance();
             orderCalendar.setTime(order.getOrderDate());
@@ -43,6 +46,11 @@ public class OrderService {
         }
 
         return filteredOrders;
+    }
+  
+      public List<Order> getAllByUser(String username){
+        User user = userService.findByUsername(username);
+        return orderRepository.findByUser(user);
     }
     public List<Order> getOrdersByYear(int year) {
         List<Order> allOrders = getAllOrders();

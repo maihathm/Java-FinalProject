@@ -32,6 +32,10 @@
                         <a href="/" class="float-start">
                             Truc's Shop
                         </a>
+                        </br>
+                        <a th:if="${user != null && user.equals('admin')}" href="/admin" class="float-start">
+                            Admin Product
+                        </a>
                     </div>
                     <!-- Left elements -->
 
