@@ -12,8 +12,6 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
-import org.springframework.security.web.util.matcher.AndRequestMatcher;
-import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 @Configuration
 @EnableWebSecurity
@@ -37,15 +35,14 @@ public class SecurityConfiguaration {
                                 .csrf((csrf) -> csrf.disable())
                                 .authorizeHttpRequests((authorize) -> authorize
                                                 .requestMatchers("/", "/category", "/shop", "/brand", "/search",
-                                                                "/filter", "/checkout","cart/**","/do-register","/register")
+                                                                "/filter", "/checkout")
                                                 .permitAll()
                                                 .requestMatchers("/admin/**").hasAuthority("ADMIN")
                                                 .requestMatchers("/static/**", "/vendors/**","/js/**",
                                                 "/css/**","/images/**").permitAll()
-                                                .requestMatchers("/cart", "/order","/add-to-cart").authenticated())
-                                .formLogin((login) -> login.loginPage("/login")
-                                                .loginProcessingUrl("/do-login")
-                                                .defaultSuccessUrl("/",true)
+                                                .requestMatchers("/cart", "/order").authenticated())
+                                .formLogin((login) -> login
+                                                .defaultSuccessUrl("/")
                                                 .successHandler((request, response, authentication) -> {
                                                         if (authentication.getName().equals("admin")) {
                                                                 response.sendRedirect("/admin");
@@ -54,14 +51,9 @@ public class SecurityConfiguaration {
                                                         }
                                                 })
                                                 .permitAll())
-                                .logout(logout->logout.invalidateHttpSession(true)
-                                        .clearAuthentication(true)
-                                        .logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
-                                        .logoutSuccessUrl("/").permitAll()
-                                        )
-                                        .sessionManagement(
-                                                            session -> session.sessionCreationPolicy(
-                                                                        SessionCreationPolicy.IF_REQUIRED))
-                                        .build();
+                                .sessionManagement(
+                                                session -> session.sessionCreationPolicy(
+                                                                SessionCreationPolicy.IF_REQUIRED))
+                                .build();
         }
 }
